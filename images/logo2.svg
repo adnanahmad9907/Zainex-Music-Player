@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" aria-label="Zainex">
+  <!-- Circle with Z -->
+  <circle cx="30" cy="30" r="25" fill="#1DB954"/>
+  <path d="M20 20h20l-20 20h20" stroke="white" stroke-width="4" fill="none"/>
+  
+  <!-- Zainex text -->
+  <text x="70" y="45" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="white">Zainex</text>
+</svg>
