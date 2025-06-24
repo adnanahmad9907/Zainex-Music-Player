@@ -19,7 +19,7 @@ function secondsToMinutesSeconds(seconds) {
 
 async function getSongs(folder) {
     currFolder=folder
-    let a = await fetch(`${folder}/`)
+    let a = await fetch(`http://127.0.0.1:3000/Zainex-Music-Player/${folder}/`)
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
@@ -58,7 +58,7 @@ async function getSongs(folder) {
 }
 
 const playMusic = (track, pausee = false) => {
-    currentsong.src = `${currFolder}/` + track
+    currentsong.src = `http://127.0.0.1:3000/Zainex-Music-Player/${currFolder}/` + track
     if (!pausee) {
         currentsong.play()
         play.src = "images/pause.svg"
@@ -68,7 +68,7 @@ const playMusic = (track, pausee = false) => {
 }
 
 async function displayAlbums() {
-    let a = await fetch(`songs/`)
+    let a = await fetch(`http://127.0.0.1:3000/Zainex-Music-Player/songs/`)
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
@@ -80,7 +80,7 @@ async function displayAlbums() {
         const e = array[index]
         if (e.href.includes("/songs")){
             let folder = (e.href.split("/").slice(-2)[0])
-            let a = await fetch(`songs/${folder}/info.json`)
+            let a = await fetch(`http://127.0.0.1:3000/Zainex-Music-Player/songs/${folder}/info.json`)
             let response = await a.json();
             // console.log(response)
             cardContainer.innerHTML += `<div data-folder="${folder}" class="card">
@@ -91,7 +91,7 @@ async function displayAlbums() {
                                                         stroke-linejoin="round" />
                                                 </svg>
                                         </div>
-                                        <img src="songs/${folder}/cover.jpeg" alt="img">
+                                        <img src="http://127.0.0.1:3000/Zainex-Music-Player/songs/${folder}/cover.jpeg" alt="img">
                                         <h2>${response.title}</h2>
                                         <p>${response.description}</p>
                                         </div>`
