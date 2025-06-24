@@ -118,46 +118,33 @@ const playMusic = (track, pausee = false) => {
 
 // this is updated version of the code
 async function displayAlbums() {
-  let a = await fetch(`songs/`);
-  let response = await a.text();
-  let div = document.createElement("div");
-  div.innerHTML = response;
-  let anchors = div.getElementsByTagName("a");
-
-  console.log("All anchors found in songs/:", anchors);
-
+  const albumFolders = ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8"]; // manually listed album folders
   let cardContainer = document.querySelector(".cardContainer");
-  let array = Array.from(anchors);
-  for (let index = 0; index < array.length; index++) {
-    const e = array[index];
-    const href = e.getAttribute("href");
-    console.log("Checking href:", href);
 
-    if (href && href !== "../") {
-      const folder = href.replace(/\/$/, ""); // remove trailing slash
-      try {
-        let a = await fetch(`songs/${folder}/info.json`);
-        let response = await a.json();
+  for (let folder of albumFolders) {
+    try {
+      let res = await fetch(`songs/${folder}/info.json`);
+      let info = await res.json();
 
-        cardContainer.innerHTML += `<div data-folder="${folder}" class="card">
-                <div class="play">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                       xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5 20V4L19 12L5 20Z" fill="#000" stroke="#141B34"
-                          stroke-width="1.5" stroke-linejoin="round" />
-                  </svg>
-                </div>
-                <img src="songs/${folder}/cover.jpeg" alt="img">
-                <h2>${response.title}</h2>
-                <p>${response.description}</p>
-              </div>`;
-      } catch (err) {
-        console.error(`Error fetching info for songs/${folder}`, err);
-      }
+      cardContainer.innerHTML += `
+          <div data-folder="${folder}" class="card">
+            <div class="play">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 20V4L19 12L5 20Z" fill="#000" stroke="#141B34"
+                  stroke-width="1.5" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <img src="songs/${folder}/cover.jpeg" alt="img">
+            <h2>${info.title}</h2>
+            <p>${info.description}</p>
+          </div>`;
+    } catch (err) {
+      console.error(`❌ Could not load songs/${folder}/info.json`, err);
     }
   }
 
-  // Click listener
+  // Add click listeners to each card
   Array.from(document.getElementsByClassName("card")).forEach((e) => {
     e.addEventListener("click", async (item) => {
       songs = await getSongs(`songs/${item.currentTarget.dataset.folder}`);
